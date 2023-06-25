@@ -1,2 +1,13 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using LysDicordBot;
+
+namespace LysDiscordBot
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            var bot = new Bot();
+            bot.RunAsync().GetAwaiter().GetResult();
+        }
+    }
+}
