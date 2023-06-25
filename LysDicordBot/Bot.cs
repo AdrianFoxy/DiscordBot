@@ -15,7 +15,7 @@ using LysDicordBot.Commands;
 
 namespace LysDicordBot
 {
-    public class Bot : IDisposable
+    public class Bot
     {
         public DiscordClient Client { get; private set; }
         public InteractivityExtension Interactivity { get; private set; }
@@ -60,7 +60,7 @@ namespace LysDicordBot
             // Slash commands can be registered either globally or for a certain guild.
             // However, if you try to register them globally, they can take up to an hour to cache across all guilds.
             // So, it is recommended that you only register them for a certain guild for testing, and only register them globally once they're ready to be used.
-            slashCommandsConfig.RegisterCommands<TestSlashCommands>(1071320251834306673);
+            slashCommandsConfig.RegisterCommands<SlashPollCommands>(1071320251834306673);
 
             Commands.RegisterCommands<FunCommands>();
             Commands.RegisterCommands<CardGameCommands>();
@@ -76,9 +76,5 @@ namespace LysDicordBot
             return Task.CompletedTask;
         }
 
-        public void Dispose()
-        {
-            Client?.Dispose();
-        }
     }
 }
