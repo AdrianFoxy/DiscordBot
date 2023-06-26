@@ -43,5 +43,6 @@ namespace LysDicordBot.Commands.PrefixCommands
         {
             await ctx.Channel.SendMessageAsync($"Result: {number1 / number2}");
         }
+
     }
 }
