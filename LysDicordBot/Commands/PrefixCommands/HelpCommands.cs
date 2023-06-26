@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LysDicordBot.Commands
+namespace LysDicordBot.Commands.PrefixCommands
 {
     public class HelpCommands : BaseCommandModule
     {

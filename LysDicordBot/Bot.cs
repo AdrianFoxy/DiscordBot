@@ -10,8 +10,8 @@ using System.Text;
 using System.Threading.Tasks;
 using DSharpPlus.Interactivity.Extensions;
 using DSharpPlus.SlashCommands;
-using LysDicordBot.SlashCommands;
-using LysDicordBot.Commands;
+using LysDicordBot.Commands.PrefixCommands;
+using LysDicordBot.Commands.SlashCommands;
 
 namespace LysDicordBot
 {
@@ -61,6 +61,7 @@ namespace LysDicordBot
             // However, if you try to register them globally, they can take up to an hour to cache across all guilds.
             // So, it is recommended that you only register them for a certain guild for testing, and only register them globally once they're ready to be used.
             slashCommandsConfig.RegisterCommands<SlashPollCommands>(1071320251834306673);
+            slashCommandsConfig.RegisterCommands<DataTableCommands>(1071320251834306673);
 
             Commands.RegisterCommands<FunCommands>();
             Commands.RegisterCommands<CardGameCommands>();

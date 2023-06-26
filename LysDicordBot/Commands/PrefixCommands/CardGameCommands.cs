@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using LysDicordBot.ExternalClasses;
 
-namespace LysDicordBot.Commands
+namespace LysDicordBot.Commands.PrefixCommands
 {
     public class CardGameCommands : BaseCommandModule
     {
