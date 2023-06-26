@@ -13,32 +13,16 @@ using DSharpPlus.CommandsNext.Attributes;
 using DSharpPlus.Interactivity.EventHandling;
 using System.Collections.ObjectModel;
 
-namespace LysDicordBot.SlashCommands
+namespace LysDicordBot.Commands.SlashCommands
 {
     public class SlashPollCommands : ApplicationCommandModule
     {
-        [SlashCommand("test", "first slash command")]
-        public async Task TetsSlahCommand(InteractionContext ctx,
-            [Choice("Pre-Defined Text", "123123asdasd")]
-            [Option("string", "Type in anything you want")] string text)
-        {
-            await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder()
-                .WithContent("Starting slash command..."));
-
-            var embedMessage = new DiscordEmbedBuilder()
-            {
-                Title = text
-            };
-
-            await ctx.Channel.SendMessageAsync(embed: embedMessage);
-        }
-
         [SlashCommand("poll", "create poll, enter question of pull, timeLimit, options and imageUrl if u need it")]
         public async Task CollectionCommand(InteractionContext ctx,
                         [Option("question", "The main poll subject/question")] string Question,
                         [Option("timeLimit", "Time limit on this poll")] long TimeLimit,
                         [Option("options", "Use * to enter multiple options")] string options,
-                        [Option("ImageUrl", "Enter ImageUrl for pull, optional")]  string imageUrl = null)
+                        [Option("ImageUrl", "Enter ImageUrl for pull, optional")] string imageUrl = null)
         {
 
             await ctx.CreateResponseAsync(InteractionResponseType.ChannelMessageWithSource, new DiscordInteractionResponseBuilder()

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using DSharpPlus.Interactivity.Extensions;
 using DSharpPlus.Interactivity.EventHandling;
 
-namespace LysDicordBot.Commands
+namespace LysDicordBot.Commands.PrefixCommands
 {
     public class FunCommands : BaseCommandModule
     {
