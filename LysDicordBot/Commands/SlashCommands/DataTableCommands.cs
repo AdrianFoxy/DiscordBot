@@ -60,7 +60,7 @@ namespace LysDicordBot.Commands.SlashCommands
             } else{ await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent("No log file")); }
         }
 
-        [SlashCommand("clear_table_commands", "delete all table commands, except table")]
+        [SlashCommand("clear_bot_commands", "delete all table commands, except table")]
         public async Task Clear(InteractionContext ctx)
         {
             await ctx.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
@@ -80,7 +80,6 @@ namespace LysDicordBot.Commands.SlashCommands
             await ctx.Channel.DeleteMessagesAsync(botMessages);
             _logservice.Write(new TableLog(DateTime.Now, ctx.CommandName, ctx.User.Username).ToString());
             await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent("Clear channel!"));
-
         }
 
         [SlashCommand("remove_row", "remove row by #")]
