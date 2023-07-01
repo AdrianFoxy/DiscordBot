@@ -57,5 +57,23 @@ namespace LysDicordBot.Commands.SlashCommands
             await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent("Clear channel!"));
         }
 
+        [SlashCommand("profile", "get your profile info")]
+        public async Task ProfileCommand(InteractionContext ctx)
+        {
+            await ctx.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
+
+            string username = ctx.User.Username;
+
+            var profileEmbed = new DiscordMessageBuilder()
+                .AddEmbed(new DiscordEmbedBuilder()
+                .WithColor(DiscordColor.Azure)
+                .WithTitle(username + "`s Profile")
+                .WithThumbnail(ctx.User.AvatarUrl)
+                );
+
+            await ctx.Channel.SendMessageAsync(profileEmbed);
+            await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent("Here`s your profile"));
+        }
+
     }
 }
