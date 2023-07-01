@@ -5,15 +5,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Reflection;
+using LysDicordBot.Interfaces;
+using LysDicordBot.Models;
+using LysDicordBot.Services;
 
 namespace LysDicordBot.Commands.SlashCommands
 {
     public class DataTableCommands : ApplicationCommandModule
     {
         private static ulong LastMessageId;
+
         private static string _tableFilePath = Path.Combine(Path.Combine(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).FullName, "table"), "table.txt"));
         private static string _idFilePath = Path.Combine(Path.Combine(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).FullName, "table"), "TableMessageId.txt"));
         private static string _folderPath = Path.Combine(Path.GetDirectoryName(Directory.GetCurrentDirectory()), "table");
+
+        private static string _logFilePath = Path.Combine(Path.Combine(Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).FullName, "table"), "log.txt"));
+
+        LogService _logservice = new LogService(_logFilePath);
 
         [SlashCommand("get_table_txt", "download txt file of table")]
         public async Task SendTableFileCommand(InteractionContext ctx)
@@ -21,17 +30,37 @@ namespace LysDicordBot.Commands.SlashCommands
             await ctx.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
             if (File.Exists(_tableFilePath))
             {
-                using(var fs = new FileStream(_tableFilePath, FileMode.Open, FileAccess.Read)){
+                using (var fs = new FileStream(_tableFilePath, FileMode.Open, FileAccess.Read))
+                {
 
                     var messagebuilder = new DiscordMessageBuilder()
                         .AddFile(fs);
                     await ctx.Channel.SendMessageAsync(messagebuilder);
                 }
-                await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent("Here is your txt file:"));
-            }
+                _logservice.Write(new TableLog(DateTime.Now, ctx.CommandName, ctx.User.Username).ToString());
+                await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent("Here is your file:"));
+            } else {  await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent("No table file")); }
         }
 
-        [SlashCommand("clear_table_commands", "delete all table commands, except table")]
+        [SlashCommand("get_logs_file", "download txt file of logs")]
+        public async Task SendLogsFile(InteractionContext ctx)
+        {
+            await ctx.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
+            if (File.Exists(_logFilePath))
+            {
+                using (var fs = new FileStream(_logFilePath, FileMode.Open, FileAccess.Read))
+                {
+
+                    var messagebuilder = new DiscordMessageBuilder()
+                        .AddFile(fs);
+                    await ctx.Channel.SendMessageAsync(messagebuilder);
+                }
+                _logservice.Write(new TableLog(DateTime.Now, ctx.CommandName, ctx.User.Username).ToString());
+                await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent("Here is your file:"));
+            } else{ await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent("No log file")); }
+        }
+
+        [SlashCommand("clear_bot_commands", "delete all table commands, except table")]
         public async Task Clear(InteractionContext ctx)
         {
             await ctx.CreateResponseAsync(InteractionResponseType.DeferredChannelMessageWithSource);
@@ -49,8 +78,8 @@ namespace LysDicordBot.Commands.SlashCommands
             }
 
             await ctx.Channel.DeleteMessagesAsync(botMessages);
+            _logservice.Write(new TableLog(DateTime.Now, ctx.CommandName, ctx.User.Username).ToString());
             await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent("Clear channel!"));
-
         }
 
         [SlashCommand("remove_row", "remove row by #")]
@@ -70,6 +99,7 @@ namespace LysDicordBot.Commands.SlashCommands
 
                 // Save data
                 await File.WriteAllLinesAsync(_tableFilePath, modifiedLines);
+                _logservice.Write(new TableLog(DateTime.Now, $"{ctx.CommandName} {RowNumber}", ctx.User.Username).ToString());
                 await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent("Row removed!"));
 
                 await SortTable();
@@ -168,6 +198,7 @@ namespace LysDicordBot.Commands.SlashCommands
                 });
             }
 
+            _logservice.Write(new TableLog(DateTime.Now, $"{ctx.CommandName} {ValuesOfRow}", ctx.User.Username).ToString());
             await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent("New row added!"));
 
         }
@@ -187,6 +218,7 @@ namespace LysDicordBot.Commands.SlashCommands
             var tableMessage = await ctx.Channel.GetMessageAsync(LastMessageId);
             await tableMessage.DeleteAsync();
             LastMessageId = 0;
+            _logservice.Write(new TableLog(DateTime.Now, ctx.CommandName, ctx.User.Username).ToString());
             await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent("Table deleted!"));
         }
 
@@ -224,6 +256,7 @@ namespace LysDicordBot.Commands.SlashCommands
                 fileStream.Write(tablemsgID, 0, tablemsgID.Length);
             }
 
+            _logservice.Write(new TableLog(DateTime.Now, ctx.CommandName, ctx.User.Username).ToString());
             await ctx.EditResponseAsync(new DiscordWebhookBuilder().WithContent("Table created!"));
         }
 

@@ -17,6 +17,7 @@ namespace LysDicordBot.Commands.SlashCommands
 {
     public class SlashPollCommands : ApplicationCommandModule
     {
+
         [SlashCommand("poll", "create poll, enter question of pull, timeLimit, options and imageUrl if u need it")]
         public async Task CollectionCommand(InteractionContext ctx,
                         [Option("question", "The main poll subject/question")] string Question,
