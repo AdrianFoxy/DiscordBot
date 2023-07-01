@@ -5,10 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using LysDicordBot.ExternalClasses;
 using System.Reflection;
 using LysDicordBot.Interfaces;
 using LysDicordBot.Models;
+using LysDicordBot.Services;
 
 namespace LysDicordBot.Commands.SlashCommands
 {

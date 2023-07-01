@@ -47,6 +47,7 @@ namespace LysDicordBot
 
             Client.Ready += OnClientReady;
             Client.ComponentInteractionCreated += ButtonPressResponse;
+            Client.GuildMemberAdded += UserJoinHandler;
 
             var commandsConfig = new CommandsNextConfiguration()
             {
@@ -71,10 +72,25 @@ namespace LysDicordBot
 
             Commands.RegisterCommands<FunCommands>();
             Commands.RegisterCommands<CardGameCommands>();
+            Commands.RegisterCommands<AdminCommands>();
 
             await Client.ConnectAsync();
             await Task.Delay(-1);
 
+        }
+
+        private async Task UserJoinHandler(DiscordClient sender, GuildMemberAddEventArgs args)
+        {
+            var defaultChannel = args.Guild.GetDefaultChannel();
+
+            var welcomeEmbed = new DiscordEmbedBuilder()
+            {
+                Color = DiscordColor.Azure,
+                Title = $"Welcome {args.Member.Username} to the podval",
+                Description = "Come in don't be afraid, come out don't cry"
+            };
+
+            await defaultChannel.SendMessageAsync(embed: welcomeEmbed);
         }
 
         private async Task ButtonPressResponse(DiscordClient sender, ComponentInteractionCreateEventArgs args)

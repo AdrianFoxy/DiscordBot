@@ -14,8 +14,4 @@
     <PackageReference Include="DSharpPlus.SlashCommands" Version="4.4.2" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
-
 </Project>

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LysDicordBot.ExternalClasses
+namespace LysDicordBot.Services
 {
     public class LogService : ILogService
     {
